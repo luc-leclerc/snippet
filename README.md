@@ -1,4 +1,4 @@
 # snippet
 
-# Factoriel
+Factoriel
 f=n=>!n||n*f(n-1)
