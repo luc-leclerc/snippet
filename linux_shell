@@ -1,2 +1,5 @@
 Extract *.tar.gz
 tar -zxvf
+
+Setup ssh auth with file instead of pwd
+1- Have a folder ".ssh" in home with pub key in authorized_keys.
