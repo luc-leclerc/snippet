@@ -1,7 +1,7 @@
-Extract *.tar.gz
+EXTRACT *.tar.gz
 tar -zxvf
 
-Setup ssh auth with file instead of pwd
+SSH AUTHENTICATION
 - Gen it "ssh-keygen -t rsa"
 - Have a folder ".ssh" in home with pub key in authorized_keys.
 - Can be done remote with cat ~/.ssh/id_rsa.pub | ssh user@123.45.56.78 "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
@@ -10,3 +10,6 @@ Setup ssh auth with file instead of pwd
  - PermitRootLogin without-password
  - reload ssh
 
+ADD USER + sudoer
+- sudo adduser newuser
+- sudo usermod -aG sudo
