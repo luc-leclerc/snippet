@@ -13,3 +13,6 @@ SSH AUTHENTICATION
 ADD USER + sudoer
 - sudo adduser newuser
 - sudo usermod -aG sudo
+
+SEARCH IN FILE FOR PATTERN, with result line number, file name
+- grep -rnw './' -e "1073741824"
