@@ -2,4 +2,11 @@ Extract *.tar.gz
 tar -zxvf
 
 Setup ssh auth with file instead of pwd
-1- Have a folder ".ssh" in home with pub key in authorized_keys.
+- Gen it "ssh-keygen -t rsa"
+- Have a folder ".ssh" in home with pub key in authorized_keys.
+- Can be done remote with cat ~/.ssh/id_rsa.pub | ssh user@123.45.56.78 "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
+- Disable root password: 
+ - sudo nano /etc/ssh/sshd_config
+ - PermitRootLogin without-password
+ - reload ssh
+
