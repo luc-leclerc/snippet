@@ -16,3 +16,7 @@ ADD USER + sudoer
 
 SEARCH IN FILE FOR PATTERN, with result line number, file name
 - grep -rnw './' -e "1073741824"
+
+
+LIST FILE sorted by lastmodified
+ls -t  (add r for reverse)
