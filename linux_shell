@@ -20,3 +20,6 @@ SEARCH IN FILE FOR PATTERN, with result line number, file name
 
 LIST FILE sorted by lastmodified
 ls -lt  (add r for reverse)
+
+ADD EXECUTE PERMISSION to user
+chmod u+x filename
