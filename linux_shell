@@ -19,4 +19,4 @@ SEARCH IN FILE FOR PATTERN, with result line number, file name
 
 
 LIST FILE sorted by lastmodified
-ls -t  (add r for reverse)
+ls -lt  (add r for reverse)
