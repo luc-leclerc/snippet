@@ -17,9 +17,11 @@ ADD USER + sudoer
 SEARCH IN FILE FOR PATTERN, with result line number, file name
 - grep -rnw './' -e "1073741824"
 
+SEARCH ALL log files with date
+- find / -name *.log 2>/dev/null -ls
 
 LIST FILE sorted by lastmodified
-ls -lt  (add r for reverse)
+- ls -lt  (add r for reverse)
 
 ADD EXECUTE PERMISSION to user
-chmod u+x filename
+- chmod u+x filename
