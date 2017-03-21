@@ -25,3 +25,6 @@ LIST FILE sorted by lastmodified
 
 ADD EXECUTE PERMISSION to user
 - chmod u+x filename
+
+LISTEN TO PORT using NetCat
+nc -l {port}
