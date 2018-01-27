@@ -9,11 +9,19 @@
  * @param inch3
  * @returns
  */
-function vol(feet1, inch1, feet2, inch2, feet3, inch3) {
+function feetInchDimensionToFeetVolume(feet1, inch1, feet2, inch2, feet3, inch3) {
 	d1 = feet1 * 12 + inch1;
 	d2 = feet2 * 12 + inch2;
 	d3 = feet3 * 12 + inch3;
 	v = d1 * d2 * d3 / (12 * 12 * 12);
 	console.log(v);
 	return v;
+}
+
+function feetInchDimensionToFeetAir(feet1, inch1, feet2, inch2) {
+	d1 = feet1 * 12 + inch1;
+	d2 = feet2 * 12 + inch2;
+	air = d1 * d2/ (12 * 12);
+	console.log(air);
+	return air;
 }
