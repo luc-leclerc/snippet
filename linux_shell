@@ -29,5 +29,5 @@ ADD EXECUTE PERMISSION to user
 LISTEN TO PORT using NetCat
 nc -l {port}
 
-SCREENSHOT command line
+SCREENSHOT command linee
 xwd -silent -root > foo.xwd
