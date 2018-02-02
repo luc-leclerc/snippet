@@ -12,6 +12,8 @@ javascript:(()=>{if (window.location.hostname.indexOf('www.businessinsider.com')
 	var wall = document.getElementsByClassName('incognito-wall')[0];
 	wall.parentNode.removeChild(wall);
 	document.getElementsByTagName('html')[0].style["overflow"] = "auto";
+} else if (window.location.hostname.indexOf("telegraph.co.uk") >= 0) {
+	document.getElementsByClassName('adblocker-message')[0].parentNode.removeChild(document.getElementsByClassName('adblocker-message')[0]);
 } else {
 	console.log('not effective here');
 }
