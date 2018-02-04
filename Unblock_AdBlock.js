@@ -78,7 +78,7 @@ function removeTopFixedModal() {
 		var elemFrames = curElement.getElementsByTagName('iframe');
 		var containsAdBlock = curElement.innerHTML.toLowerCase().indexOf('ad-block') >= 0;
 		var containsAllowAds = curElement.innerHTML.toLowerCase().indexOf('allow ads') >= 0;
-		
+		var isMainTag = curElement.tagName.toLowerCase() == "main";
 		/* Some times we get some iframes, for now assume an internal iframe means legit content */
 		var hasIFrames = elemFrames.length > 0;
 		var containsInternalIFrame = false;
@@ -91,10 +91,10 @@ function removeTopFixedModal() {
 				containsInternalIFrame = true;
 			}
 		}
-		if (!isNaN(currentZ) && isVisible && (containsAdBlock || containsAllowAds || (hasIFrames && !containsInternalIFrame))) {
+		if (!isNaN(currentZ) && isVisible && !isMainTag && (containsAdBlock || containsAllowAds || (hasIFrames && !containsInternalIFrame))) {
 			console.log(curElement);
 			window.mod.push(curElement);
-			curElement.parentNode.removeChild(curElement);
+			/*curElement.parentNode.removeChild(curElement);*/
 		}
 	}
 }
