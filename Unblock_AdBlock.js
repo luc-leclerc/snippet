@@ -34,8 +34,6 @@ function removeBlur() {
 				classSet[curClass] = 1;
 			}
 		}
-		curElement.style["filter"] ="";
-		curElement.style["-webkit-filter"] ="";
 	}
 
 	/* Test presence of blur on each class */
