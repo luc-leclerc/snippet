@@ -94,7 +94,7 @@ function removeTopFixedModal() {
 		if (!isNaN(currentZ) && isVisible && !isMainTag && (containsAdBlock || containsAllowAds || (hasIFrames && !containsInternalIFrame))) {
 			console.log(curElement);
 			window.mod.push(curElement);
-			/*curElement.parentNode.removeChild(curElement);*/
+			curElement.parentNode.removeChild(curElement);
 		}
 	}
 }
