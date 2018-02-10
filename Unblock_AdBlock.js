@@ -2,7 +2,10 @@ javascript:(()=>{
 	/*
 	 * So far works on: businessinsider.com, journalstar.com, technologyreview.com, menshealth.com, telegraph.co.uk
 	 */
-
+	
+/* Amp project is web framework to manage ads and improve latency, first used by washingtonpost.com */	
+removeAmpAccess();
+	
 removeNonOpaqueEmptyElements();
 
 allowOverflowOnBodyAndHeader();
@@ -10,6 +13,14 @@ allowOverflowOnBodyAndHeader();
 removeBlur();
 
 removeTopFixedModal();
+
+function removeAmpAccess() {
+	var all = document.getElementsByTagName("*");
+	for (var i = 0; i < all.length; i++) {
+		var curElement = all[i];
+		curElement.removeAttribute('amp-access');
+	}
+}
 
 
 function removeNonOpaqueEmptyElements() {
