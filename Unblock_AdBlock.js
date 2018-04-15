@@ -1,6 +1,18 @@
 javascript:(()=>{
 	/*
-	 * So far works on: businessinsider.com, journalstar.com, technologyreview.com, menshealth.com, telegraph.co.uk
+	 * Ex. of site to test on: 
+	 * 
+	 * https://www.washingtonpost.com/
+	 * 
+	 * businessinsider.com
+	 * 
+	 * journalstar.com
+	 * 
+	 * technologyreview.com
+	 * 
+	 * menshealth.com
+	 * 
+	 * telegraph.co.uk
 	 */
 	
 /* Amp project is web framework to manage ads and improve latency, first used by washingtonpost.com */	
@@ -12,7 +24,93 @@ allowOverflowOnBodyAndHeader();
 
 removeBlur();
 
-removeTopFixedModal();
+/*removeTopFixedModal();*/
+
+removeImmovableDivAndIFrame();
+
+function removeImmovableDivAndIFrame() {
+	var divs = Array.prototype.slice.call(document.getElementsByTagName("div"), 0);
+	var iframes = Array.prototype.slice.call(document.getElementsByTagName("iframe"), 0);
+	
+	var elems = divs.concat(iframes);
+	
+	var elemsPositions = [];
+	for (var i = 0; i < elems.length; i++) {
+		var curElem = elems[i];
+		
+		var obj = {};
+		obj.elem = curElem;
+		var rec = curElem.getBoundingClientRect();
+		obj.rec = rec;
+		obj.air = rec.width * rec.height;
+		
+		if (rec.width > rec.height) {
+			obj.ratio = rec.width / rec.height;
+		} else {
+			obj.ratio = rec.height / rec.width;
+		}
+		
+		elemsPositions[i] = obj;
+	}
+	
+	elemsPositions = elemsPositions.filter(function (e, i, r) {
+		return e.air > 100 && e.ratio < 20;
+	});
+	
+	window.scrollTo(0,document.body.scrollHeight);
+	
+	var after_divs = Array.prototype.slice.call(document.getElementsByTagName("div"), 0);
+	var after_iframes = Array.prototype.slice.call(document.getElementsByTagName("iframe"), 0);
+	
+	var after_elems = after_divs.concat(after_iframes);
+	
+	var after_elemsPositions = [];
+	for (var i = 0; i < after_elems.length; i++) {
+		var curElem = after_elems[i];
+		
+		var obj = {};
+		obj.elem = curElem;
+		var rec = curElem.getBoundingClientRect();
+		obj.rec = rec;
+		obj.air = rec.width * rec.height;
+		
+		if (rec.width > rec.height) {
+			obj.ratio = rec.width / rec.height;
+		} else {
+			obj.ratio = rec.height / rec.width;
+		}
+		
+		after_elemsPositions[i] = obj;
+	}
+	
+	after_elemsPositions = after_elemsPositions.filter(function (e, i, r) {
+		return e.air > 10000 && e.ratio < 20;
+	});
+	
+	var toDel = [];
+	var count = 0;
+	for (var i = 0; i < elemsPositions.length; i++) {
+		var bef = elemsPositions[i];
+		for (var j = 0; j < after_elemsPositions.length; j++) {
+			var aft = after_elemsPositions[j];
+			
+			if (bef.elem == aft.elem) {
+				if (bef.rec.top != aft.rec.top) {
+					console.log(count++);
+					console.log(bef);
+				} else {
+					toDel.push(bef);
+				}
+			}
+		}
+	}
+	
+	for (var k = 0; k < toDel.length; k++) {
+		toDel[k].elem.parentNode.removeChild(toDel[k].elem);
+	}
+	
+	window.scrollTo(0,0);
+}
 
 function removeAmpAccess() {
 	var all = document.getElementsByTagName("*");
