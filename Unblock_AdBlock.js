@@ -10,7 +10,7 @@ javascript:(()=>{
 	 * 
 	 * technologyreview.com
 	 * 
-	 * menshealth.com
+	 * seattletimes.com
 	 * 
 	 * telegraph.co.uk
 	 */
@@ -152,6 +152,14 @@ function allowOverflowOnBodyAndHeader() {
 		return false;
 	});
 	
+	detectOffendingClasses(["div", "body", "html"], classSet, "position", function(computedStyle) {
+		var overVal = computedStyle.getPropertyValue('position') + "";
+		if (overVal.indexOf('fixed') >= 0) {
+			return true;
+		}
+		return false;
+	});
+	
 	/* For each element. */
 	for (var i = 0; i < elemArr.length; i++) {
 		var curElement = elemArr[i];
@@ -164,6 +172,9 @@ function allowOverflowOnBodyAndHeader() {
 			if (classSet[className].overflow) {
 				curElement.classList.remove(className);
 			}
+			if (classSet[className].position) {
+				curElement.classList.remove(className);
+			}
 		}
 		
 		/* Overwrite direct style */
@@ -172,6 +183,9 @@ function allowOverflowOnBodyAndHeader() {
 		}
 		if (curElement.style["overflow-y"].indexOf('hidden') >= 0) {
 			curElement.style["overflow-y"] = "auto";
+		}
+		if (curElement.style["position"].indexOf('fixed') >= 0) {
+			curElement.style["position"] = "static";
 		}
 	}
 }
@@ -210,10 +224,19 @@ function removeTopFixedModal() {
 
 function removeBlur() {
 	/* Find every unique class */
-	var all = document.getElementsByTagName("*");
-	var classSet = getClassSetFromElementArray(all);
+	var elemArr = document.getElementsByTagName("*");
+	var classSet = getClassSetFromElementArray(elemArr);
 
 	/* Test presence of blur on each class */
+	detectOffendingClasses(["div", "body", "html"], classSet, "filter", function(computedStyle) {
+		var overVal = computedStyle.getPropertyValue('filter') + "";
+		var webblur = computedStyle.getPropertyValue('-webkit-filter') + "";
+		if (overVal.indexOf('blur') >= 0 || webblur.indexOf('blur') >= 0) {
+			return true;
+		}
+		return false;
+	});
+	
 	var testDiv = document.createElement('div');
 	for (var className in classSet) {
 		if (!classSet.hasOwnProperty(className)) {
@@ -230,16 +253,26 @@ function removeBlur() {
 		}
 	}
 	
-	/* Remove offending class from all objects. */
-	for (var className in classSet) {
-		if (!classSet.hasOwnProperty(className)) {
-			continue;
-		}
-		if (classSet[className].blur) {
-			for (var i = 0; i < all.length; i++) {
-				var curElement = all[i];
+	/* For each element. */
+	for (var i = 0; i < elemArr.length; i++) {
+		var curElement = elemArr[i];
+		
+		/* Remove offending class */
+		for (var className in classSet) {
+			if (!classSet.hasOwnProperty(className)) {
+				continue;
+			}
+			if (classSet[className].blur) {
 				curElement.classList.remove(className);
 			}
+		}
+		
+		/* Overwrite direct style */
+		if (curElement.style["filter"].indexOf('blur') >= 0) {
+			curElement.style["filter"] = "unset";
+		}
+		if (curElement.style["-webkit-filter"].indexOf('blur') >= 0) {
+			curElement.style["-webkit-filter"] = "unset";
 		}
 	}
 }
