@@ -223,7 +223,7 @@ function removeTopFixedModal() {
 }
 
 function removeBlur() {
-	/* Find every unique class */
+	/* Find every unique class  */
 	var elemArr = document.getElementsByTagName("*");
 	var classSet = getClassSetFromElementArray(elemArr);
 
