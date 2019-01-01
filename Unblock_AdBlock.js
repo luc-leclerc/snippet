@@ -15,9 +15,16 @@ javascript:(()=>{
 	 * telegraph.co.uk
 	 */
 	
+var bodyElem = Array.prototype.slice.call(document.getElementsByTagName('body'));
+var htmlElem = Array.prototype.slice.call(document.getElementsByTagName('html'));
+var divs = Array.prototype.slice.call(document.getElementsByTagName("div"));
+var iframes = Array.prototype.slice.call(document.getElementsByTagName("iframe"));
+var all = document.getElementsByTagName("*");
+
+
 /* Amp project is web framework to manage ads and improve latency, first used by washingtonpost.com */	
 removeAmpAccess();
-	
+
 removeNonOpaqueEmptyElements();
 
 allowOverflowOnBodyAndHeader();
@@ -29,9 +36,6 @@ removeBlur();
 removeImmovableDivAndIFrame();
 
 function removeImmovableDivAndIFrame() {
-	var divs = Array.prototype.slice.call(document.getElementsByTagName("div"), 0);
-	var iframes = Array.prototype.slice.call(document.getElementsByTagName("iframe"), 0);
-	
 	var elems = divs.concat(iframes);
 	
 	var elemsPositions = [];
@@ -113,24 +117,21 @@ function removeImmovableDivAndIFrame() {
 }
 
 function removeAmpAccess() {
-	var all = document.getElementsByTagName("*");
 	for (var i = 0; i < all.length; i++) {
 		var curElement = all[i];
 		curElement.removeAttribute('amp-access');
 	}
 }
 
-
 function removeNonOpaqueEmptyElements() {
-	window.opa = [];
-	var all = document.getElementsByTagName("*");
 	for (var i = 0; i < all.length; i++) {
 		var curElement = all[i];
 		var computedStyle = window.getComputedStyle(curElement, null);
 		var opacity = computedStyle.getPropertyValue('opacity') - 0;
 		
 		if (opacity != 1 && !curElement.innerHTML) {
-			window.opa.push(curElement);
+			console.log('Removing elem - opacity:');
+			console.log(curElement);
 			curElement.parentNode.removeChild(curElement);
 		}
 	}
@@ -223,7 +224,7 @@ function removeTopFixedModal() {
 }
 
 function removeBlur() {
-	/* Find every unique class  */
+	/* Find every unique class */
 	var elemArr = document.getElementsByTagName("*");
 	var classSet = getClassSetFromElementArray(elemArr);
 
