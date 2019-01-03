@@ -1,6 +1,6 @@
 javascript:(()=>{
 	/*
-	 * Ex. of site to test on: 
+	 * Ex. of site to test on:
 	 * 
 	 * https://www.washingtonpost.com/
 	 * 
@@ -15,10 +15,10 @@ javascript:(()=>{
 	 * telegraph.co.uk
 	 */
 	
-var bodyElem = Array.prototype.slice.call(document.getElementsByTagName('body'));
-var htmlElem = Array.prototype.slice.call(document.getElementsByTagName('html'));
-var divs = Array.prototype.slice.call(document.getElementsByTagName("div"));
-var iframes = Array.prototype.slice.call(document.getElementsByTagName("iframe"));
+var ELEMS_BODY = Array.prototype.slice.call(document.getElementsByTagName('body'));
+var ELEMS_HTML = Array.prototype.slice.call(document.getElementsByTagName('html'));
+var ELEMS_DIV = Array.prototype.slice.call(document.getElementsByTagName("div"));
+var ELEMS_IFRAME = Array.prototype.slice.call(document.getElementsByTagName("iframe"));
 var all = document.getElementsByTagName("*");
 
 
@@ -31,12 +31,12 @@ allowOverflowOnBodyAndHeader();
 
 removeBlur();
 
-/*removeTopFixedModal();*/
+/* removeTopFixedModal(); */
 
 removeImmovableDivAndIFrame();
 
 function removeImmovableDivAndIFrame() {
-	var elems = divs.concat(iframes);
+	var elems = ELEMS_DIV.concat(ELEMS_IFRAME);
 	
 	var elemsPositions = [];
 	for (var i = 0; i < elems.length; i++) {
@@ -138,9 +138,9 @@ function removeNonOpaqueEmptyElements() {
 }
 
 function allowOverflowOnBodyAndHeader() {
-	var bodyElem = Array.prototype.slice.call(document.getElementsByTagName('body'));
-	var htmlElem = Array.prototype.slice.call(document.getElementsByTagName('html'));
-	var elemArr = bodyElem.concat(htmlElem);
+	var ELEMS_BODY = Array.prototype.slice.call(document.getElementsByTagName('body'));
+	var ELEMS_HTML = Array.prototype.slice.call(document.getElementsByTagName('html'));
+	var elemArr = ELEMS_BODY.concat(ELEMS_HTML);
 	var classSet = getClassSetFromElementArray(elemArr);
 	
 	/* Test presence of overflow on each class for multiple elem type */
@@ -293,18 +293,43 @@ function removeArray(elemArr){
 	}
 }
 
-function getClassSetFromElementArray(elemArr) {
-	var classSet = {};
-	for (var i = 0; i < elemArr.length; i++) {
-		var curElement = elemArr[i];
-		if (curElement && curElement.classList && curElement.classList.length) {
-			for (var j = 0; j < curElement.classList.length; j++) {
-				var curClass = curElement.classList[j];
-				classSet[curClass] = {};
+function getClassSet(elem) {
+	return new Set([...elem.classList || []]);
+}
+
+function allowOverflow() {
+	let elems = ELEMS_BODY.concat(ELEMS_HTML).concat(ELEMS_DIV);
+	let set = getClassSetFromElementArray(elems);
+	
+	let tests = [];
+	
+	
+	
+	const tagWithClassToRemove = new Set();
+	
+	['div', 'body', 'html'].forEach((tagName)=> {
+		let testElement = document.createElement(tagName);
+		
+		set.forEach((className) => {
+			testElem.setAttribute('class', className); 
+			var computedStyle = window.getComputedStyle(testElem, null);
+			
+			let overflow = computedStyle.getPropertyValue('overflow');
+			let overflowY = computedStyle.getPropertyValue('overflow-y');
+			
+			let isOverflow = overflow && overflow != "auto";
+			let isOverflowY = overflowY && overflowY != "auto";
+			
+			if (isOverflow && isOverflowY) {
+				tagWithClassToRemove.add(tagName + "_" + className);
 			}
-		}
-	}
-	return classSet;
+		});
+	});
+	
+	elems.forEach((elem)=>{
+		elem.classList.remove(className);
+	});
+	
 }
 
 function detectOffendingClasses(elemTypeArr, classSet, resultName, testFunction) {
@@ -317,8 +342,7 @@ function detectOffendingClasses(elemTypeArr, classSet, resultName, testFunction)
 			if (!classSet.hasOwnProperty(className)) {
 				continue;
 			}
-			testElem.setAttribute('class', className); 
-			var computedStyle = window.getComputedStyle(testElem, null);
+			
 			
 			classSet[className][resultName] = testFunction(computedStyle);
 		}
